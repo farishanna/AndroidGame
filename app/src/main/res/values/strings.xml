@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Happy Game</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="mode_ready">Ready</string>
+    <string name="mode_pause">Pause</string>
+    <string name="mode_lose">Lose</string>
+    <string name="mode_win">Win</string>
+    <string name="score_text">0</string>
+    <string name="lives_text">5</string>
+    <string name="menu_start">Start</string>
+    <string name="menu_stop">Stop</string>
+    <string name="menu_resume">Resume</string>
+    <string name="message_stopped">Stopped</string>
+    <string name="on_off">On/Off</string>
+    <string name="ret_to_menu">Return to Main Menu</string>
+    <string name="music">Music</string>
+    <string name="about">Welcome! Choose your level, or create your own level! Try to hit the smiley face with the ball to get points,
+    the sad faces will try to block you from touching the smiley face. Avoid touching the angry faces at all costs, since they want
+    you to lose! Enjoy!</string>
+
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "586265138747",
+    "project_id": "androidgame-e61f6",
+    "storage_bucket": "androidgame-e61f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586265138747:android:bb7f5a8985d24728ba2e1e",
+        "android_client_info": {
+          "package_name": "uk.ac.reading.sis05kol.mooc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586265138747-bq3p2jmhup8ehbp775aubsigjvndieoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjDvhceCX76ig47trdaz3IiRyKZUVcjW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586265138747-bq3p2jmhup8ehbp775aubsigjvndieoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
