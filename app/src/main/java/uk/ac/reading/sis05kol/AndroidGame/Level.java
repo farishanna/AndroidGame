@@ -41,11 +41,11 @@ public class Level {
 
     /**
      * Used to help onCreate method in MainActivity with creating custom levels
-     * @param lives
-     * @param pointsToWin
-     * @param sadFaces
-     * @param angryFaces
-     * @param veryAngryFaces
+     * @param lives -- Amount of Lives
+     * @param pointsToWin -- Amount of Points
+     * @param sadFaces -- Amount of Sad Faces
+     * @param angryFaces -- Amount of Angry Faces
+     * @param veryAngryFaces -- Amount of Very Angry Faces
      */
     public Level(int lives, int pointsToWin, int sadFaces, int angryFaces, int veryAngryFaces){
         this.sadFaces = sadFaces;

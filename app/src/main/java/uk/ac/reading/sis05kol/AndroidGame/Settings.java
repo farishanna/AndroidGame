@@ -11,15 +11,13 @@ import android.widget.Button;
  * Class for the settings activity
  */
 public class Settings extends Activity {
+    //Set up the buttons
     private Button exitToMenu;
     private Button musicOnButton;
     private Button musicOffButton;
+    //Setup the game button
+    public boolean musicOn = true;
 
-    static MainActivity music;
-
-    public static void setMainActivity(MainActivity activity){
-        music = activity;
-    }
 
     /**
      * onCreate method
@@ -46,7 +44,7 @@ public class Settings extends Activity {
         musicOnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //turnOn();
+                turnOn();
             }
         });
 
@@ -54,7 +52,7 @@ public class Settings extends Activity {
         musicOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //turnOff();
+                turnOff();
             }
         });
     }
@@ -68,13 +66,20 @@ public class Settings extends Activity {
     }
 
     /**
-     * TODO: Create method to turn button on or off
+     * Turn on song
      */
-    public void turnOnOff(){
-        if (music.musicBtn == true){
-            music.musicBtn = false;
-        } else{
-            music.musicBtn = true;
+    public void turnOn(){
+        if (musicOn == false){
+            musicOn = true;
+        }
+    }
+
+    /**
+     * Turn off song
+     */
+    public void turnOff(){
+        if (musicOn == true){
+            musicOn = false;
         }
     }
 }

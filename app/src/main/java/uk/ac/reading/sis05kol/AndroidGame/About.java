@@ -11,7 +11,7 @@ import android.widget.Button;
  * Class for forming the about page
  */
 public class About extends Activity {
-    private Button exitToMenu;
+    private Button exitToMenu; //Only an exit button needed
 
     /**
      * onCreate method

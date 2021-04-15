@@ -1,8 +1,7 @@
 package uk.ac.reading.sis05kol.AndroidGame;
 
-import android.app.Activity;
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +16,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.widget.Toast;
+
 
 public abstract class GameThread extends Thread {
 	//Different mMode states
@@ -41,8 +42,6 @@ public abstract class GameThread extends Thread {
 	
 	//Android Context - this stores almost all we need to know
 	private Context mContext;
-
-	private MainActivity mainActivity;
 	
 	//The view
 	public GameView mGameView;
@@ -56,12 +55,8 @@ public abstract class GameThread extends Thread {
  
 	protected Bitmap mBackgroundImage;
 
-	MainActivity level = new MainActivity();
-
-	Level l;
-
 	protected long score = 0;
-	protected int lives = 5; //TODO:  get the level life
+	protected int lives = 5;
 
     //Used for time keeping
 	private long now;
@@ -73,6 +68,9 @@ public abstract class GameThread extends Thread {
 
     //Used to ensure appropriate threading
     static final Integer monitor = 1;
+
+	//Helps with setting the won and lost activity and error handling
+	private MainActivity mainActivity;
 	
 
 	public GameThread(GameView gameView) {
@@ -125,11 +123,7 @@ public abstract class GameThread extends Thread {
 					if (mMode == STATE_RUNNING) {
 						updatePhysics();
 					}
-					//try {
-						doDraw(canvasRun);
-				//	} catch (NullPointerException ne) {
-				//		Log.d("GAME_THREAD_DODRAW", "Failed from NullPE");
-				//	}
+					doDraw(canvasRun);
 				}
 			} 
 			finally {
@@ -165,6 +159,7 @@ public abstract class GameThread extends Thread {
 
 		} catch (NullPointerException ne){
 			Log.d("GAME_THREAD_DO_DRAW", "Failed from NullPE");
+			Toast.makeText(mainActivity, "Error has occurred!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -297,7 +292,6 @@ public abstract class GameThread extends Thread {
 						}
 						else 
 							if (mMode == STATE_WIN) {
-								//str = res.getText(R.string.mode_win);
 								mainActivity.won();
 							}
 
@@ -316,19 +310,14 @@ public abstract class GameThread extends Thread {
 	
 	/*
 	 * Getter and setter
-	 */	
-	public void setSurfaceHolder(SurfaceHolder h) { mSurfaceHolder = h; }
-	
-	public boolean isRunning() { return mRun; }
+	 */
 	
 	public void setRunning(boolean running) { mRun = running; }
 	
 	public int getMode() { return mMode; }
-
-	public void setMode(int mMode) { this.mMode = mMode; }
 	
 	
-	/* ALL ABOUT SCORES */
+	/* ALL ABOUT SCORES AND LIVES*/
 	
 	//Send a score to the View to view 
 	//Would it be better to do this inside this thread writing it manually on the screen?
@@ -349,7 +338,7 @@ public abstract class GameThread extends Thread {
 		this.mainActivity = main;
 	}
 
-	//Send a score to the View to view
+	//Send the lives to the View to view
 	//Would it be better to do this inside this thread writing it manually on the screen?
 	public void setLives(int lives) {
 		this.lives = lives;
@@ -363,6 +352,7 @@ public abstract class GameThread extends Thread {
 		}
 	}
 
+
 	public float getScore() { return score; }
 	
 	public void updateScore(long score) { this.setScore(this.score + score); }
@@ -373,8 +363,8 @@ public abstract class GameThread extends Thread {
 
 	public void updateLives(int lives) { this.setLives(this.lives + lives); }
 
-
 	public abstract void setLevel(Level level);
+
 }
 
 // This file is part of the course "Begin Programming: Build your first mobile game" from futurelearn.com

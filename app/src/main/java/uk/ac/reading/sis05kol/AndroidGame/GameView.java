@@ -20,8 +20,6 @@ import android.media.SoundPool;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
 	private volatile GameThread thread;
 
-	//private SensorEventListener sensorAccelerometer;
-
 	//Handle communication from the GameThread to the View/Activity Thread
 	private Handler mHandler;
 	
@@ -107,42 +105,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         setClickable(true);
 		setFocusable(true);
 	}
-	
-	public GameThread getThread() {
-		return thread;
-	}
 
-	public TextView getStatusView() {
-		return mStatusView;
-	}
+	public void setStatusView(TextView mStatusView) { this.mStatusView = mStatusView; }
 
-	public void setStatusView(TextView mStatusView) {
-		this.mStatusView = mStatusView;
-	}
-	
-	public TextView getScoreView() {
-		return mScoreView;
-	}
+	public void setScoreView(TextView mScoreView) { this.mScoreView = mScoreView; }
 
-	public void setScoreView(TextView mScoreView) {
-		this.mScoreView = mScoreView;
-	}
+	public void setLivesView(TextView mLivesView) { this.mLivesView = mLivesView; }
 
-	public TextView getLivesView() {
-		return mLivesView;
-	}
-
-	public void setLivesView(TextView mLivesView) {
-		this.mLivesView = mLivesView;
-	}
-
-	public Handler getmHandler() {
-		return mHandler;
-	}
-
-	public void setmHandler(Handler mHandler) {
-		this.mHandler = mHandler;
-	}
+	public Handler getmHandler() { return mHandler; }
 	
 	
 	/*

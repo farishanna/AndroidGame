@@ -1,6 +1,5 @@
 package uk.ac.reading.sis05kol.AndroidGame;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,15 +8,10 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends Activity {
@@ -29,25 +23,22 @@ public class MainActivity extends Activity {
     private GameThread mGameThread;
     private GameView mGameView;
 
-    public static Activity activity;
-
-    MediaPlayer menusong;
-    public boolean musicBtn = true;
-
-    Level level;
+    MediaPlayer song; //Setup game song
+    Level level; //Helps setup level
 
 
     /** Called when the activity is first created. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int levelNumber = 1;
+        int levelNumber; //Initialize level number
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             levelNumber = extras.getInt("LEVEL");
             if (levelNumber < 4) {
                 level = new Level(levelNumber);
             } else {
+                /* Help setup custom level */
                 int lives = extras.getInt("LIVES");
                 int points = extras.getInt("POINTS");
                 int sadFaces = extras.getInt("SAD_FACES");
@@ -67,34 +58,21 @@ public class MainActivity extends Activity {
         mGameView.setScoreView((TextView)findViewById(R.id.score));
         mGameView.setLivesView((TextView)findViewById(R.id.lives));
 
+        //MusicThread
+        song = MediaPlayer.create(MainActivity.this, R.raw.menu);
+        song.start(); //Starts song
+        song.setLooping(true); // Repeat song in a loop
 
-        // Determine which level to show the life at the beginning
-//        displayFirstLife = (TextView) findViewById(R.id.lives);
-//        displayFirstLife.setText(""+level.getLives());
 
-/*
-        // Play the music in the background
-        //TODO:  Setup the button in the settings for turning music on or off based on the condition
-        if (musicBtn == true) {
-            menusong = MediaPlayer.create(MainActivity.this, R.raw.menu);
-            menusong.start(); //Starts song
-            menusong.setLooping(true); // Repeat song in a loop
-        } else {
-            menusong.release();
-        }
-*/
-        menusong = MediaPlayer.create(MainActivity.this, R.raw.menu);
-        menusong.start(); //Starts song
-        menusong.setLooping(true); // Repeat song in a loop
-        //Music.playMenu();
-        this.startGame(mGameView, null, level);
+        this.startGame(mGameView, null, level); //Start level depending on the level
     }
 
     private void startGame(GameView gView, GameThread gThread, Level level) {
-        Music.setMainActivity(this);
+        //Start music thread
+        MusicThread.setMainActivity(this);
         //Set up a new game, we don't care about previous states
         mGameThread = new TheGame(mGameView);
-        mGameThread.setLevel(level);
+        mGameThread.setLevel(level); //Set level
         mGameView.setThread(mGameThread);
         mGameThread.setState(GameThread.STATE_READY);
         mGameView.startSensor((SensorManager)getSystemService(Context.SENSOR_SERVICE));
@@ -112,7 +90,7 @@ public class MainActivity extends Activity {
         if(mGameThread.getMode() == GameThread.STATE_RUNNING) {
             mGameThread.setState(GameThread.STATE_PAUSE);
         }
-        menusong.release();
+        song.release(); //Stop song onPause
     }
 
 
@@ -170,6 +148,7 @@ public class MainActivity extends Activity {
     /**
      * Methods for using the intent to display the win and lost activity in TheGame class
      */
+
     public void won(){
         Intent intent = new Intent(this, Win.class);
         startActivity(intent);

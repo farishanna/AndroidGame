@@ -75,7 +75,7 @@ public class SelectLevel extends Activity {
      */
     public void playLevel(int level){
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("LEVEL", level);
+        intent.putExtra("LEVEL", level); //Plays depending on level
         startActivity(intent);
     }
 

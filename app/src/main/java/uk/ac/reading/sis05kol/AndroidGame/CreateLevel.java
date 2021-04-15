@@ -10,6 +10,7 @@ import android.widget.Button;
  * Class to create levels
  */
 public class CreateLevel extends Activity {
+    //Setup buttons
     private Button playButton;
     private Button exitToSelect;
     private Button addSadFace;
@@ -18,6 +19,7 @@ public class CreateLevel extends Activity {
     private Button addLives;
     private Button addPoints;
 
+    //Initialize game options
     private static int sadFaces = 1;
     private static int angryFaces = 1;
     private static int veryAngryFaces = 0;
@@ -50,8 +52,8 @@ public class CreateLevel extends Activity {
         addSadFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sadFaces++;
-                addSadFace.setText("Add Sad Faces: "+sadFaces);
+                sadFaces++; //Adds one on click
+                addSadFace.setText("Add Sad Faces: "+sadFaces); //Edits the text
             }
         });
 
@@ -60,8 +62,8 @@ public class CreateLevel extends Activity {
             @Override
             public void onClick(View view) {
                 if (angryFaces < 5) {
-                    angryFaces++;
-                    addAngryFace.setText("Add Angry Faces: " + angryFaces);
+                    angryFaces++; //Adds one on click
+                    addAngryFace.setText("Add Angry Faces: " + angryFaces); //Edits the text
                 }
             }
         });
@@ -70,8 +72,8 @@ public class CreateLevel extends Activity {
         addVeryAngryFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                veryAngryFaces++;
-                addVeryAngryFace.setText("Add Very Angry Faces: "+veryAngryFaces);
+                veryAngryFaces++; //Adds one on click
+                addVeryAngryFace.setText("Add Very Angry Faces: "+veryAngryFaces); //Edits the text
             }
         });
 
@@ -79,8 +81,8 @@ public class CreateLevel extends Activity {
         addLives.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lives++;
-                addLives.setText("Add lives: "+lives);
+                lives++; //Adds one on click
+                addLives.setText("Add lives: "+lives); //Edits the text
             }
         });
 
@@ -88,8 +90,8 @@ public class CreateLevel extends Activity {
         addPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                points++;
-                addPoints.setText("Add Points to Win: "+points);
+                points++; //Adds one on click
+                addPoints.setText("Add Points to Win: "+points); //Edits the text
             }
         });
 
@@ -108,6 +110,7 @@ public class CreateLevel extends Activity {
     public void playLevel(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("LEVEL", 4); //Setting to 4 since its not either 1-3
+        //Set the objects with the intent based on the amount inputted
         intent.putExtra("LIVES", lives);
         intent.putExtra("ANGRY_FACES", angryFaces);
         intent.putExtra("VERY_ANGRY_FACES", veryAngryFaces);

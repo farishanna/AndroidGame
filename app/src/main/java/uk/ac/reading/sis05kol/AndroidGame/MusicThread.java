@@ -6,22 +6,19 @@ import android.util.Log;
 /**
  * Class to create music and sound effects
  */
-public class Music {
-    static MainActivity m;
-
-    public static void setMainActivity(MainActivity main){
-        m = main;
-    }
+public class MusicThread extends Thread{
+    static MainActivity m; //Needed to help play sounds to main activity
 
     /**
-     * Play the menu music
-     * @param
+     * Run (Multithreading improvements)
      */
-    public static void playMenu(){
-        // Play the music in the background
-        MediaPlayer song = MediaPlayer.create(m, R.raw.menu);
-        song.start(); //Starts song
-        song.setLooping(true);
+    @Override
+    public void run() {
+        super.run();
+        playBounce();
+        playLose();
+        playWin();
+        playPoint();
     }
 
     /**
@@ -67,5 +64,9 @@ public class Music {
         MediaPlayer song = MediaPlayer.create(m, R.raw.point);
         song.start(); //Starts song
     }
+
+
+
+    public static void setMainActivity(MainActivity main){ m = main; }
 
 }

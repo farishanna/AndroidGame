@@ -2,7 +2,6 @@ package uk.ac.reading.sis05kol.AndroidGame;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,8 +43,8 @@ public class Lose extends Activity {
             }
         });
 
-        //Plays lose song
-        Music.playLose();
+        //Plays lose sound
+        MusicThread.playLose();
     }
 
     /**

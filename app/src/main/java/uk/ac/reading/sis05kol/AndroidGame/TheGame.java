@@ -1,13 +1,11 @@
 package uk.ac.reading.sis05kol.AndroidGame;
 
 //Other parts of the android libraries that we use
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.media.MediaPlayer;
-import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,13 +20,10 @@ public class TheGame extends GameThread{
     //This is used to check collisions
     private float mMinDistanceBetweenBallAndPaddle = 0;
     private float mMinDistanceBetweenEnemyAndPaddle = 0;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef; //To help with high score
 
     private Level level;
-    public MainActivity activity;
-    private Music music;
-    public boolean loseIntent = false;
-
+    public MainActivity activity; //To help display errors
 
     //Will store the image of the Paddle used to hit the ball
     private final Bitmap mPaddle;
@@ -69,8 +64,6 @@ public class TheGame extends GameThread{
     private float[] mSadBallX = {-100, -100, -100};
     private float[] mSadBallY = {-100, -100, -100};
 
-    //private float[] mSadBallX = {-100, -100};
-    //private float[] mSadBallY = {-100, -100};
 
     //The X and Y position of the SadBalls on the screen
     //The point is the top left corner, not middle, of the balls
@@ -84,24 +77,20 @@ public class TheGame extends GameThread{
 
 
     public int highScore; //Retrieve high score
-    public String winScore; //Retrieve win score
 
-    Music bounce;
 
-   // MediaPlayer bounce;
-   // Music m = new Music();
-
-    //Used to add a point to every second played
- /*   final Handler handler = new Handler();
-    final int delay = 1000; */
-
+    /**
+     * Sets the level
+     * @param newLevel -- To obtain from the level class
+     */
     public void setLevel(Level newLevel){
         try {
             level = newLevel;
             setLives(level.getLives());
-            getHighScore();
+            getHighScore(); //get the high score to help compare the game score
         } catch (NullPointerException ne){
             Log.d("THE_GAME", "Failed from NullPE");
+            Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -156,6 +145,7 @@ public class TheGame extends GameThread{
             }
         } catch (NullPointerException ne){
             Log.d("THE_GAME", "Failed from NullPE");
+            Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
         }
 
         //Place the ball in the middle of the screen.
@@ -200,6 +190,7 @@ public class TheGame extends GameThread{
             }
         } catch (NullPointerException ne) {
             Log.d("THE_GAME_ENEMIES", "Failed from NullPE");
+            Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
         }
         //Get the minimum distance between a small ball and a bigball
         //We leave out the square root to limit the calculations of the program
@@ -250,6 +241,7 @@ public class TheGame extends GameThread{
 
         } catch (NullPointerException ne) {
             Log.d("THE_GAME_DRAW", "Failed from NullPE");
+            Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -289,17 +281,9 @@ public class TheGame extends GameThread{
         if (mBallSpeedY > 0) {
             //Check for a paddle collision
             if(updateBallCollision(mPaddleX, mCanvasHeight)){
-                Music.playBounce();
+                MusicThread.playBounce();
             }
-            //setState(GameThread.STATE_LOSE);
         }
-
-        /*//If the ball moves down on the screen
-        if (mEnemiesSpeedY > 0) {
-            //Check for a paddle collision
-            updateBallCollision(mPaddleX, mCanvasHeight);
-            //setState(GameThread.STATE_LOSE);
-        }*/
 
         //Move the ball's X and Y using the speed (pixel/sec)
         mBallX = mBallX + secondsElapsed * mBallSpeedX;
@@ -320,7 +304,7 @@ public class TheGame extends GameThread{
         //If it does that => change the direction of the ball in the X direction
         if ((mBallX <= mBall.getWidth() / 2 && mBallSpeedX < 0) || (mBallX >= mCanvasWidth - mBall.getWidth() / 2 && mBallSpeedX > 0)) {
             mBallSpeedX = -mBallSpeedX;
-            Music.playBounce();
+            MusicThread.playBounce();
         }
 
         //Check if the enemy hits either the left side or the right side of the screen
@@ -340,22 +324,15 @@ public class TheGame extends GameThread{
             //Increase score
             updateScore(1);
             //Plays point sound
-            Music.playPoint();
+            MusicThread.playPoint();
         }
-
-        // will add to the score every second
-    /*    handler.postDelayed(new Runnable() {
-            public void run() {
-                updateScore(1);
-            }
-        }, delay); */
 
         //Loop through all SadBalls
         for (int i = 0; i < mSadBallX.length; i++) {
             //Perform collisions (if necessary) between SadBall in position i and the red ball
            if(updateBallCollision(mSadBallX[i], mSadBallY[i])) {
                //Play bounce sound if collided with SadBall(s)
-               Music.playBounce();
+               MusicThread.playBounce();
            }
         }
 
@@ -379,7 +356,7 @@ public class TheGame extends GameThread{
         //change the direction of the ball in the Y direction
         if (mBallY <= mBall.getWidth() / 2 && mBallSpeedY < 0) {
             mBallSpeedY = -mBallSpeedY;
-            Music.playBounce();
+            MusicThread.playBounce();
         }
 
         //If the ball goes out of the bottom of the screen => lose the game
@@ -392,8 +369,7 @@ public class TheGame extends GameThread{
             // Win the game depending on levels score and store high score
             int score = (int) getScore();
             if (score >= level.getPointsToWin()) {
-                //Store score
-                winScore = String.valueOf(score);
+                setState(GameThread.STATE_WIN);
 
                 // Store high score
                 if (score > highScore) {
@@ -401,25 +377,22 @@ public class TheGame extends GameThread{
                     setHighScore();
                     Log.d("THE_GAME", "New high score: " + score);
                 }
-                setState(GameThread.STATE_WIN);
             }
         } catch (NullPointerException ne){
                 Log.d("THE_GAME", "Failed from NullPE");
+                Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
             }
 
         // Determines if player has lost their lives and loses
         if (getLives() == 0){
-            loseIntent = true;
-            //activity.startLose();
             setState(GameThread.STATE_LOSE_FINAL);
         }
 
     }
 
-    public String getWinScore() {
-        return winScore;
-    }
-
+    /**
+     * Get the high score
+     */
     private void getHighScore(){
         myRef = FirebaseDatabase.getInstance().getReference("Root");
 
@@ -435,6 +408,7 @@ public class TheGame extends GameThread{
                     highScore = value;
                 } catch (NullPointerException ne){
                     Log.d("THE_GAME", "Failed from NullPE");
+                    Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -442,10 +416,14 @@ public class TheGame extends GameThread{
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w("THE_GAME", "Failed to read value.", error.toException());
+                Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Set the high score
+     */
     public void setHighScore() {
         // Reading a message from the database
         myRef.setValue(highScore);

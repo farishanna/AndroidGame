@@ -2,19 +2,16 @@ package uk.ac.reading.sis05kol.AndroidGame;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**
  * Class to display the winning activity
  */
 public class Win extends Activity {
+    //Setup buttons
     private Button playButn;
     private Button exitButn;
 
@@ -48,17 +45,15 @@ public class Win extends Activity {
         });
 
         //Plays win song
-        Music.playWin();
+        MusicThread.playWin();
     }
 
     /**
      * Play again
      */
     public void playAgain(){
-       // try {
             Intent intent = new Intent(this, SelectLevel.class);
             startActivity(intent);
-     //   } catch ()
     }
 
     /**

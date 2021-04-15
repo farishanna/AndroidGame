@@ -14,20 +14,18 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 /**
  * Class for forming the HighScore page
  */
 public class HighScore extends Activity {
-    private Button exitToMenu;
-    private TextView highScoreDisplay;
-
-    static String TAG = "HIGH_SCORE";
+    private Button exitToMenu; //Setup exit button
+    private TextView highScoreDisplay; //Setup high score button
+    static String TAG = "HIGH_SCORE"; //Setup TAG
+    public MainActivity activity; //To help display error to users
 
 
     /**
@@ -44,30 +42,13 @@ public class HighScore extends Activity {
         DatabaseReference myRef = database.getReference();
         Log.d(TAG, "Fetching high score");
         // Read from the database
-        /*myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                int value = dataSnapshot.getValue(int.class);
-                Log.d(TAG, "Value is: " + value);
 
-                //Toast.makeText(HighScore.this, "High Score is: " + value, Toast.LENGTH_SHORT).show();
-                highScoreDisplay = (TextView) findViewById(R.id.highscoretxt);
-                highScoreDisplay.setText("High Score is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });*/
         myRef.child("Root").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()){
                     Log.d(TAG, "Firebase had an error getting data", task.getException());
+                    Toast.makeText(activity, "Error has occurred!", Toast.LENGTH_SHORT).show();
                 } else{
                     String value = String.valueOf(task.getResult().getValue());
                     Log.d(TAG, "Value is: " + value);

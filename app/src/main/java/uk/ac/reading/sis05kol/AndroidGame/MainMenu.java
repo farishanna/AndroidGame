@@ -3,23 +3,15 @@ package uk.ac.reading.sis05kol.AndroidGame;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Process;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 /**
  * Class to create the main menu
  */
 public class MainMenu extends Activity {
+    //Setup buttons
     private Button playButton;
     private Button exitButton;
     private Button settingsButton;
